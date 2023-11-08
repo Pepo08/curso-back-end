@@ -1,8 +1,0 @@
-const es una variable la cual no puede ser resignado su valor luego de su inicializacion (pero si puede mutar) y en cuanto a let si puede modificarse su valor luego de su inicializacion.
-se dejo de usar var pq tiene algun problema de scope y puede llegar a resignarse dos veces.
-let puede cambiarse, reasignarse y mutar.
-La principal diferenciaentre ellos radica en la mutabilidad de la variable una vez que ha sido declarada.
-
-spread: [...array] esto es todo lo que esta en ese array ahi y vos le podes agregar cosas
-y si queres cambiar algo dentro del array tenes que poner la prop de lo que queres cambiar y le cambias el value, ejemplo:
-const colores = {..array, rojo: 255}
