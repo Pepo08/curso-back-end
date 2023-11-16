@@ -16,7 +16,7 @@ class ProductManager{
         console.log(`productos: ${productosJson}`)
     }
     async getProductByCode(produId){
-        const product = fs.promises.readFile("productos.json", produId)
+        const product = this.productos.find(x => x.id === produId)
         if(product){
             console.log(`Este productos existe, es ${product.title}`)
         }else{
@@ -24,16 +24,16 @@ class ProductManager{
         }
     }
     async updateProductById(id, obj){
-        
+        const a = Object.values(this.productos)
     }
     async deleteProductById(id){
         const productoEliminado = this.productos.filter(x => x.id !== id)
         await fs.promises.writeFile("productos.json", JSON.stringify(productoEliminado))
+        this.productos = productoEliminado
         console.log(`El producto con el ${id} fue eliminado`)
+        console.log(this.productos)
     }
 }
 const ticket = new ProductManager
 ticket.addProductos('remeruqui', 'esta re copada esta', 10,'qsy', "sahg13",98)
 ticket.addProductos('remui', 'esta re copada', 10,'nas',"ajsdha", 98)
-ticket.deleteProductById(2)
-ticket.getProducts()
