@@ -24,7 +24,16 @@ class ProductManager{
         }
     }
     async updateProductById(id, obj){
-        const a = Object.values(this.productos)
+        const index = this.productos.findIndex(producto => producto.id === id);
+        if (index !== -1) {
+            const updatedProduct = { ...this.productos[index], ...obj };
+            this.productos[index] = updatedProduct;
+            await fs.promises.writeFile("productos.json", JSON.stringify(this.productos));
+            console.log(`El producto con id ${id} fue actualizado`);
+            console.log(this.productos);
+        } else {
+            console.log(`No se encontró ningún producto con el id ${id}`);
+        }
     }
     async deleteProductById(id){
         const productoEliminado = this.productos.filter(x => x.id !== id)
