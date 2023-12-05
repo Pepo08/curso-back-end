@@ -25,7 +25,7 @@ class CartManager{ //Daos (data access obj)
     }
     getCartById = async (cid) =>{
         carts = await this.readFile()
-        const cart = carts.find(x=> x.id === id)
+        const cart = carts.find(x=> x.id === cid)
         if(!cart){
             return "no se encuentra en el carrito"
         }
