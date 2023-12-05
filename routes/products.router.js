@@ -1,4 +1,4 @@
-const { Router } = reuire("express")
+const { Router } = require("express")
 const ProductManager = require("../Managers/productManager")
 
 const productRouter = Router()
@@ -14,7 +14,7 @@ productRouter
     })
     .get("/:pid", async (req,res) =>{ //para conseguir un producto por el id
         const {pid} = req.params
-        const product = await productService.getProductByID(pid)
+        const product = await productService.getProductById(pid)
         if(!product){
             return res.send({
                 status: "error",

@@ -1,5 +1,5 @@
 const fs = require('node:fs')
-const path = '../productos.json'
+const path = '../mockDB/productos.json'
 class ProductManager {
     constructor() {
         this.path = path
@@ -15,16 +15,16 @@ class ProductManager {
     }
     getProducts = async () => {
         try {
-            return await this.readFile()
+            return await this.path.readFile()
         } catch (error) {
-            return 'No se hay productos'
+            return 'No hay productos'
         }
     }
-    getProduct = async (id) => {
+    getProductById = async (pid) => {
         try {
             const products = await this.readFile()
             if (!products) return 'No hay productos'
-            return products.find(product => product.id === id)
+            return products.find(product => product.id === pid)
         } catch (error) {
             return new Error(error)
         }
@@ -32,22 +32,20 @@ class ProductManager {
     addProduct = async (newItem) => {
         try {
             let products = await this.readFile()
-            const productDb = products.find(product => product.code === newItem.code)
+            const productDb = products.find(product => product.id === newItem.id)
             console.log(productDb)
             if (productDb) {
-                return `Se encuenta el producto`
+                return `Ya se encuetra este producto en el lugar`
+            }else{
+                if (products.length === 0) {
+                    newItem.id = 1
+                    products.push(newItem)
+                } else {
+                    products = [...products, { ...newItem, id: products.length + 1 }]
+                }
+                await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2), 'utf-8')
+                return "producto agregado"
             }
-            
-            if (products.length === 0) {
-                // creando propieda id
-                newItem.id = 1
-                products.push(newItem)
-            } else {
-                // products =  [...products, {...newItem, id: products[products.length - 1].id + 1 } ] 
-                products = [...products, { ...newItem, id: products.length + 1 }]
-            }
-            await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2), 'utf-8')
-            return 'Producto agregado'
         } catch (error) {
             return new Error(error)
         }
@@ -63,5 +61,9 @@ class ProductManager {
     }
 }
 const ticket = new ProductManager
-ticket.addProduct("remera", "buenas buenas","deaaa", "sajsjas")
+ticket.addProduct("remera")
+ticket.addProduct("remer")
+ticket.addProduct("reme")
+ticket.addProduct("rem")
+ticket.addProduct("re")
 module.exports = ProductManager
