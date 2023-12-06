@@ -20,7 +20,7 @@ class CartManager{ //Daos (data access obj)
             newcart = {id: carts.length + 1, products: [] }
         }
         carts.push(newcart)
-        const results = await fs.promises.writeFile(this.path, JSON.stringify(carts, bull, 2), "utf-8")
+        const results = await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2), "utf-8")
         return results
     }
     getCartById = async (cid) =>{

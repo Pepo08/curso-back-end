@@ -3,6 +3,7 @@ const path = '../mockDB/productos.json'
 class ProductManager {
     constructor() {
         this.path = path
+        this.products = []
     }
     readFile = async () => {
         try {
@@ -13,11 +14,13 @@ class ProductManager {
             return []
         }
     }
-    getProducts = async () => {
-        try {
-            return await this.path.readFile()
-        } catch (error) {
-            return 'No hay productos'
+    async getProducts(){
+        try{
+        const products = await this.path.readFile()
+        console.log(`productos: ${products}`)
+        return JSON.parse(products)
+        }catch(error){
+            console.log(error)
         }
     }
     getProductById = async (pid) => {
@@ -50,7 +53,7 @@ class ProductManager {
             return new Error(error)
         }
     }
-    async update(pid, updateToProduct) {
+    async updatePrd(pid, updateToProduct) {
         let products = await this.readFile()
         const productIndex = products.findIndex(product => pid === product.id)
         if (productIndex !== -1) { 
@@ -59,6 +62,20 @@ class ProductManager {
         await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2), 'utf-8')
         return 'producto acualizado'
     }
+    async deleteProduct(id) {
+        const prdId = this.products.findIndex((elm) => elm.id === id);
+        if (prdId === -1) {
+        return 'Producto no encontrado';
+        } else {
+        const removedProduct = this.path[prdId]
+        const newProducts = this.products.filter((elm) => elm.id != id);
+        this.products = newProducts;
+        const jsonProduct = JSON.stringify(this.products, null, 2);
+        await fs.promises.writeFile(this.path, jsonProduct);
+        return removedProduct;
+        }
+    }
+    
 }
 const ticket = new ProductManager
 ticket.addProduct("remera")
